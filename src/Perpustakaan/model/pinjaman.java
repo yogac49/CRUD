@@ -10,5 +10,10 @@ package Perpustakaan.model;
  * @author YOGA SAPUTRA
  */
 public class pinjaman {
+    public static void main(String[] args) {
+        
     
+  
+    
+}
 }

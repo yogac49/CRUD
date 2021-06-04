@@ -1,16 +1,20 @@
 package Perpustakaan.ui;
 import Perpustakaan.model.Buku;
 import Perpustakaan.model.BukuManager;
-import static Perpustakaan.model.BukuManager.listbuku;
-import static Perpustakaan.model.BukuManager.tablemodel;
+import Perpustakaan.model.BukuManager;
+import  Perpustakaan.model.BukuManager;
 import config.CheckConnection;
 import config.ConnectionHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java. util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +28,6 @@ import javax.swing.JOptionPane;
  * and open the template in the editor.
  */
 
-
 /**
  *
  * @author YOGA SAPUTRA
@@ -37,10 +40,13 @@ public class ShowBookJframe extends javax.swing.JFrame {
     public ShowBookJframe() {
         initComponents();
         initTablebook();
+        
         showAllBook();
         loadbook();
         setLocationRelativeTo(null);
+        ValidateExit();
     }
+    
      public static  DefaultTableModel tablemodel;
         public static List<Buku> listbuku;
         private void initTablebook(){
@@ -96,22 +102,24 @@ public class ShowBookJframe extends javax.swing.JFrame {
         });
         });
     }
-//       private void deleteBuku() {
-//    int selectedRow = bookTable.getSelectedRow();
-//    Buku selectedBuku = bukuList.get(selectedRow);
-//    int confirm = JOptionPane.showConfirmDialog(this, "Yakin Hapus"+selectedBuku.getJudulBuku()+" ?");
-//    if (confirm == JOptionPane.YES_OPTION) {
-//        BukuManager= new BukuManager();
-//        try {
-//            datasource.delete(selectedBuku);
-//            tableModel.removeRow(selectedRow);
-//            bukuList.remove(selectedBuku);
-//            showSucceed("Data buku berhasil dihapus");
-//        } catch (SQLException e) {
-//            showSucceed("Data buku gagal dihapus");
-//            e.printStackTrace();
-//        }
-//    }
+          public void showMassage(String Massage, int type){
+        if(type == 1){
+            JOptionPane.showMessageDialog(this,Massage ,"Sukses", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(this,Massage,"Gagal",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+          private void ValidateExit(){
+      ShowBookJframe.this.addWindowListener(new WindowAdapter() {
+          @Override
+          public void windowClosing(WindowEvent we) {
+            if(JOptionPane.showConfirmDialog(ShowBookJframe.this,"Apakah anda yakin ingin keluar.?",
+                    "PERINGATAN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+          }
+      });
+   }
           
     /**
      * This method is called from within the constructor to initialize the form.
@@ -131,6 +139,7 @@ public class ShowBookJframe extends javax.swing.JFrame {
         btnadd = new javax.swing.JButton();
         btnupdate = new javax.swing.JButton();
         btndelete = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -163,54 +172,86 @@ public class ShowBookJframe extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jScrollPane1);
 
         btnrefresh.setText("Refresh");
-
-        btnadd.setText("Add");
-
-        btnupdate.setText("Update");
-
-        btndelete.setText("Delete");
-        btndelete.addActionListener(new java.awt.event.ActionListener() {
+        btnrefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btndeleteActionPerformed(evt);
+                btnrefreshActionPerformed(evt);
             }
         });
 
+        btnadd.setText("Add");
+        btnadd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddActionPerformed(evt);
+            }
+        });
+
+        btnupdate.setText("Update");
+        btnupdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnupdateActionPerformed(evt);
+            }
+        });
+
+        btndelete.setText("Delete");
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Data Buku");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(315, 315, 315)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(318, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(17, 17, 17))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(114, Short.MAX_VALUE)
-                .addComponent(btnrefresh)
-                .addGap(184, 184, 184)
-                .addComponent(btnadd)
-                .addGap(108, 108, 108)
-                .addComponent(btnupdate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btndelete)
-                .addContainerGap())
-            .addComponent(jScrollPane3)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(296, 296, 296)
-                .addComponent(jLabel1)
+                .addGap(24, 24, 24)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnrefresh)
+                        .addGap(184, 184, 184)
+                        .addComponent(btnadd)
+                        .addGap(108, 108, 108)
+                        .addComponent(btnupdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btndelete)
+                        .addGap(23, 23, 23)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(75, 75, 75)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnrefresh)
                     .addComponent(btnadd)
                     .addComponent(btnupdate)
                     .addComponent(btndelete))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(67, 67, 67))
         );
 
         pack();
@@ -220,22 +261,44 @@ public class ShowBookJframe extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bookTableMouseClicked
 
-    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
-        // TODO add your handling code here:
-     DefaultTableModel model1 = (DefaultTableModel) bookTable.getModel();
-        int selectedRowIndex = bookTable.getSelectedRow();
-        model1.removeRow(selectedRowIndex);
-try {
-      Connection conn = ConnectionHelper.getConnection();
-            Statement st = conn.createStatement();
-    String sql = "DELETE from buku where id_buku='" +btndelete.getText() + "'";
-    st.executeUpdate(sql);
+    private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
 
-} catch (Exception ex) {
-    System.err.println(ex);
-}
-        
-    }//GEN-LAST:event_btndeleteActionPerformed
+        // TODO add your handling code here:
+        new tambahbuku().setVisible(true);
+    }//GEN-LAST:event_btnaddActionPerformed
+
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
+        // TODO add your handling code here:
+        int SelectedRow = bookTable.getSelectedRow();
+        if(SelectedRow == -1){
+            showMassage("Pilih baris dulu !",2);
+        }else{
+            Buku buku = listbuku.get(SelectedRow);
+           new tambahbuku("Update buku",buku.getId_buku()).setVisible(true);
+        }
+    }//GEN-LAST:event_btnupdateActionPerformed
+
+    private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
+        // TODO add your handling code here:
+       try {
+            Connection conn = ConnectionHelper.getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("Select * from buku");
+            while (rs.next()) {                
+                Buku buku = new Buku(); 
+                buku.setId_buku(Integer.parseInt(rs.getString("id_buku")));
+                buku.setJudul_buku(rs.getString("judul_buku"));
+                buku.setPengarang(rs.getString("Pengarang"));
+                buku.setPenerbit(rs.getString("penerbit"));
+                buku.setTahun_terbit(Integer.parseInt(rs.getString("tahun_terbit")));
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(CheckConnection.class.getName()).log(Level.SEVERE,null,e);
+        }
+   
+      
+
+    }//GEN-LAST:event_btnrefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,6 +344,7 @@ try {
     private javax.swing.JButton btnupdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
