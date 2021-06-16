@@ -1,8 +1,9 @@
 package Perpustakaan.ui;
+
 import Perpustakaan.model.Buku;
 import Perpustakaan.model.BukuManager;
 import Perpustakaan.model.BukuManager;
-import  Perpustakaan.model.BukuManager;
+import Perpustakaan.model.BukuManager;
 import config.CheckConnection;
 import config.ConnectionHelper;
 import java.awt.event.ActionEvent;
@@ -14,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java. util.ArrayList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -40,87 +42,90 @@ public class ShowBookJframe extends javax.swing.JFrame {
     public ShowBookJframe() {
         initComponents();
         initTablebook();
-        
         showAllBook();
         loadbook();
         setLocationRelativeTo(null);
         ValidateExit();
     }
-    
-     public static  DefaultTableModel tablemodel;
-        public static List<Buku> listbuku;
-        private void initTablebook(){
-            String[] bookcolumns = new String[]{"ID" , "Judul", "Pengarang", "Penerbit", "Tahun terbit"};
-            int[] columnWidth = {70,190,210,90,90};
-           
-            tablemodel = new  DefaultTableModel(bookcolumns, 0);
-            bookTable.setModel(tablemodel);
-            bookTable.setRowHeight(20);
-            
-            int  i =0;
-            for(int width : columnWidth){
-                TableColumn column = bookTable.getColumnModel().getColumn(i++);
-                column.setMaxWidth(width);
-                column.setMaxWidth(width);
-                column.setPreferredWidth(width);
-            }
+
+    public static DefaultTableModel tablemodel;
+    public static List<Buku> listbuku;
+
+    private void initTablebook() {
+        String[] bookcolumns = new String[]{"ID", "Judul", "Pengarang", "Penerbit", "Tahun terbit"};
+        int[] columnWidth = {70, 190, 210, 90, 90};
+
+        tablemodel = new DefaultTableModel(bookcolumns, 0);
+        bookTable.setModel(tablemodel);
+        bookTable.setRowHeight(20);
+
+        int i = 0;
+        for (int width : columnWidth) {
+            TableColumn column = bookTable.getColumnModel().getColumn(i++);
+            column.setMaxWidth(width);
+            column.setMaxWidth(width);
+            column.setPreferredWidth(width);
         }
-        
-          public static List<Buku> showAllBook() {
-            List<Buku> bukuList = new ArrayList<>();
+    }
+
+    public static List<Buku> showAllBook() {
+        List<Buku> bukuList = new ArrayList<>();
         try {
             Connection conn = ConnectionHelper.getConnection();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery("Select * from buku");
-            while (rs.next()) {                
-                Buku buku = new Buku(); 
+            while (rs.next()) {
+                Buku buku = new Buku();
                 buku.setId_buku(Integer.parseInt(rs.getString("id_buku")));
                 buku.setJudul_buku(rs.getString("judul_buku"));
                 buku.setPengarang(rs.getString("Pengarang"));
                 buku.setPenerbit(rs.getString("penerbit"));
-                
+
                 buku.setTahun_terbit(Integer.parseInt(rs.getString("tahun_terbit")));
-                
+
                 bukuList.add(buku);
             }
         } catch (SQLException e) {
-            Logger.getLogger(CheckConnection.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(CheckConnection.class.getName()).log(Level.SEVERE, null, e);
         }
-    return bukuList;
-    }    
-          public static void loadbook(){
+        return bukuList;
+    }
+
+    public static void loadbook() {
         listbuku = new ArrayList<>();
-        listbuku = new  BukuManager().showAllBook();
+        listbuku = new BukuManager().showAllBook();
         tablemodel.setRowCount(0);
-        listbuku.forEach(buku ->{
+        listbuku.forEach(buku -> {
             tablemodel.addRow(new Object[]{
                 buku.getId_buku(),
                 buku.getJudul_buku(),
                 buku.getPengarang(),
                 buku.getPenerbit(),
                 buku.getTahun_terbit()
-        });
+            });
         });
     }
-          public void showMassage(String Massage, int type){
-        if(type == 1){
-            JOptionPane.showMessageDialog(this,Massage ,"Sukses", JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(this,Massage,"Gagal",JOptionPane.ERROR_MESSAGE);
+
+    public void showMassage(String Massage, int type) {
+        if (type == 1) {
+            JOptionPane.showMessageDialog(this, Massage, "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, Massage, "Gagal", JOptionPane.ERROR_MESSAGE);
         }
     }
-          private void ValidateExit(){
-      ShowBookJframe.this.addWindowListener(new WindowAdapter() {
-          @Override
-          public void windowClosing(WindowEvent we) {
-            if(JOptionPane.showConfirmDialog(ShowBookJframe.this,"Apakah anda yakin ingin keluar.?",
-                    "PERINGATAN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-                System.exit(0);
+
+    private void ValidateExit() {
+        ShowBookJframe.this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                if (JOptionPane.showConfirmDialog(ShowBookJframe.this, "Apakah anda yakin ingin keluar.?",
+                        "PERINGATAN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
             }
-          }
-      });
-   }
-          
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -193,6 +198,11 @@ public class ShowBookJframe extends javax.swing.JFrame {
         });
 
         btndelete.setText("Delete");
+        btndelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndeleteActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Data Buku");
@@ -262,7 +272,6 @@ public class ShowBookJframe extends javax.swing.JFrame {
     }//GEN-LAST:event_bookTableMouseClicked
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-
         // TODO add your handling code here:
         new tambahbuku().setVisible(true);
     }//GEN-LAST:event_btnaddActionPerformed
@@ -270,35 +279,49 @@ public class ShowBookJframe extends javax.swing.JFrame {
     private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
         // TODO add your handling code here:
         int SelectedRow = bookTable.getSelectedRow();
-        if(SelectedRow == -1){
-            showMassage("Pilih baris dulu !",2);
-        }else{
+        if (SelectedRow == -1) {
+            showMassage("Pilih baris dulu !", 2);
+        } else {
             Buku buku = listbuku.get(SelectedRow);
-           new tambahbuku("Update buku",buku.getId_buku()).setVisible(true);
+            new tambahbuku("Update buku", buku.getId_buku()).setVisible(true);
+        }
+        try {
+            Connection conn = ConnectionHelper.getConnection();
+//            Statement stm = conn.createStatement();
+//            String sql ="UPDATE  buku SET judul_buku =?,pengarang = ?, penerbit=?, tahun_terbit = ? WHERE id_buku=?";
+
+            PreparedStatement ptam = conn.prepareStatement("UPDATE  buku SET judul_buku =?,"
+                    + "pengarang = ?, penerbit=?, tahun_terbit = ? WHERE id_buku=?");
+//        stm.executeUpdate(sql);
+            ptam.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }//GEN-LAST:event_btnupdateActionPerformed
 
     private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
-        // TODO add your handling code here:
-       try {
-            Connection conn = ConnectionHelper.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("Select * from buku");
-            while (rs.next()) {                
-                Buku buku = new Buku(); 
-                buku.setId_buku(Integer.parseInt(rs.getString("id_buku")));
-                buku.setJudul_buku(rs.getString("judul_buku"));
-                buku.setPengarang(rs.getString("Pengarang"));
-                buku.setPenerbit(rs.getString("penerbit"));
-                buku.setTahun_terbit(Integer.parseInt(rs.getString("tahun_terbit")));
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(CheckConnection.class.getName()).log(Level.SEVERE,null,e);
-        }
-   
-      
-
+        loadbook();
     }//GEN-LAST:event_btnrefreshActionPerformed
+
+    private void btndeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeleteActionPerformed
+        int selectedRow = bookTable.getSelectedRow();
+        if (selectedRow == -1) {
+            showMassage("pilih baris dulu..!", 2);
+        } else {
+            int option = JOptionPane.showConfirmDialog(null, "apakah anda yakin ingin menghapus data ini", "hapus data", JOptionPane.WARNING_MESSAGE);
+            if (option == JOptionPane.YES_OPTION) {
+                try {
+                    Connection conn = ConnectionHelper.getConnection();
+                    Statement stm = conn.createStatement();
+                    Buku buku = listbuku.get(selectedRow);
+                    stm.executeUpdate("DELETE FROM buku WHERE id_buku='"+buku.getId_buku()+ "'");
+                    loadbook();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_btndeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,7 +357,7 @@ public class ShowBookJframe extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable bookTable;

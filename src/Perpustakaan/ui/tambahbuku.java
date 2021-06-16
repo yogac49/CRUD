@@ -6,10 +6,6 @@
 package Perpustakaan.ui;
 
 import Perpustakaan.model.Buku;
-import config.CheckConnection;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,14 +13,15 @@ import javax.swing.JOptionPane;
 import Perpustakaan.model.BukuManager;
 import config.ConnectionHelper;
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import Perpustakaan.ui.ShowBookJframe;
+import javax.swing.JRadioButton;
 
 /**
  *
  * @author YOGA SAPUTRA
  */
+    
 public class tambahbuku extends javax.swing.JFrame {      
     String formTittle="";
     int BukuID = 0;
@@ -33,6 +30,7 @@ public class tambahbuku extends javax.swing.JFrame {
     public tambahbuku() {
         initComponents();
         setLocationRelativeTo(null);
+        
     }
     
    public tambahbuku (String tittle, int id){
@@ -55,18 +53,31 @@ public class tambahbuku extends javax.swing.JFrame {
        pengarang.setText(buku.getPengarang());
        jComboBox1.setSelectedItem(String.valueOf(buku.getTahun_terbit()));
        
-       if (buku.getPenerbit().equalsIgnoreCase("penerbit 1")){
+       if (buku.getPenerbit().equalsIgnoreCase("Jember Pustakan")){
            jRadioButton1.setSelected(true);
-       }else if(buku.getPenerbit().equalsIgnoreCase("penerbit 2")){
+       }else if(buku.getPenerbit().equalsIgnoreCase("Gramedia")){
            jRadioButton2.setSelected(true);
-       }else if(buku.getPenerbit().equalsIgnoreCase("penerbit 3")){
+       }else if(buku.getPenerbit().equalsIgnoreCase("Polije press")){
            jRadioButton3.setSelected(true);
-       }else{
+       }else if(buku.getPenerbit().equalsIgnoreCase("RRI library")){
            jRadioButton4.setSelected(true);
        }
    }
-
-
+//     public void updatebook(){
+//         try {
+//             Connection conn = ConnectionHelper.getConnection();
+//             Statement stm = conn.createStatement();
+//             
+//            
+//             String sql = "UPDATE  buku SET judul_buku ="+judul+",pengarang = "+pengarang+", penerbit="+jrad+", "
+//                     + "tahun_terbit = "+jComboBox1+" WHERE id_buku=?";               
+//         } catch (Exception e) {
+//         }
+//     }
+        
+     public void actionPerform(){
+         
+     }
     
     private boolean validateInput() throws SQLException{
         boolean isComleted = false;
@@ -128,9 +139,9 @@ public class tambahbuku extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this,Message,"Gagal",JOptionPane.ERROR_MESSAGE);
         }
-    }
-        
-
+    }    
+ 
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,18 +162,38 @@ public class tambahbuku extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         judul = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        jlabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         addbook = new javax.swing.JLabel();
 
-        jRadioButton1.setText("Penerbit 1");
+        jRadioButton1.setText("Jember pustaka");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
 
-        jRadioButton2.setText("Penerbit 2");
+        jRadioButton2.setText("Gramedia");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
 
-        jRadioButton3.setText("Penerbit3");
+        jRadioButton3.setText("Polije Press");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
 
-        jRadioButton4.setText("Penerbit 4");
+        jRadioButton4.setText("RRI libray");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2009", "2010", "2011", "2012", "2013", "2014", "2015" }));
 
@@ -184,7 +215,13 @@ public class tambahbuku extends javax.swing.JFrame {
 
         jLabel3.setText("Pengarang");
 
-        jLabel4.setText("Penerbit");
+        judul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                judulActionPerformed(evt);
+            }
+        });
+
+        jlabel.setText("Penerbit");
 
         jLabel5.setText("Tahun Terbit");
 
@@ -221,7 +258,7 @@ public class tambahbuku extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
+                    .addComponent(jlabel)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,21 +266,21 @@ public class tambahbuku extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(129, 129, 129)
                                 .addComponent(btnsimpan)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnbatal))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(11, 11, 11)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton1)
+                                    .addComponent(jRadioButton2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton4)
+                                    .addComponent(jRadioButton3))))
                         .addGap(31, 31, 31))
                     .addComponent(pengarang)
                     .addComponent(judul))
@@ -266,11 +303,11 @@ public class tambahbuku extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton3)
-                    .addComponent(jLabel4))
+                    .addComponent(jlabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton4)
+                    .addComponent(jRadioButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,28 +325,77 @@ public class tambahbuku extends javax.swing.JFrame {
     private void btnbatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbatalActionPerformed
         // TODO add your handling code here:
         dispose();
+        
+      
     }//GEN-LAST:event_btnbatalActionPerformed
-
+    void Penerbit(){
+        String penerbit = null;
+       if (penerbit.equals("Jember pustaka")) {
+            jRadioButton1.setSelected(true);
+        }else if(penerbit.equals("Gramedia")){
+            jRadioButton2.setSelected(true);
+        }else if(penerbit.equals("Polije Press")){
+            jRadioButton3.setSelected(true);
+        }else if (penerbit.equals("RRI library")){
+            jRadioButton4.setSelected(true);
+    }
+    }
     private void btnsimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsimpanActionPerformed
-        // TODO add your handling code here:
-        if(formTittle.equalsIgnoreCase("Update buku")){
-            try {
-                if(validateInput()){
-                    BukuManager.updateBook(BukuGlobal);
+
+//        try {
+//        Connection conn = ConnectionHelper.getConnection();
+//        Statement stm = conn.createStatement();
+//        String sql ="INSERT INTO buku(judul_buku,pengarang , penerbit, tahun_terbit) "
+//                + "VALUES ("+judul.getText()+","+pengarang.getText()+","+penerbit+","+jComboBox1.getSelectedItem()+")";
+//        stm.executeUpdate(sql);
+//            JOptionPane.showMessageDialog(this, "data berhasil ditambahkan","sukses",JOptionPane.WARNING_MESSAGE);
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        } 
+                   if (formTittle.equalsIgnoreCase("Update buku")) {
+                try {
+                    if (validateInput()) {
+                        BukuManager.updateBook(BukuGlobal);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
-            } catch (SQLException e) {
-                Logger.getLogger(tambahbuku.class.getName()).log(Level.SEVERE,null,e);
-            }
         }else{
-            try {
-                if(validateInput()){
-                    BukuManager.insertBook(BukuGlobal);
+                try {
+                    if (validateInput()) {
+                        BukuManager.insertBook(BukuGlobal);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
-            } catch (SQLException e) {
-                 Logger.getLogger(tambahbuku.class.getName()).log(Level.SEVERE,null,e);
             }
-        }
+      
+        
+        
     }//GEN-LAST:event_btnsimpanActionPerformed
+      
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        penerbit = "jember pustaka";
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+        penerbit ="Gramedia";
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+        penerbit = "Polije Press";
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+        penerbit="RRI Library";
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    private void judulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_judulActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_judulActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,6 +431,7 @@ public class tambahbuku extends javax.swing.JFrame {
             }
         });
     }
+    private String penerbit;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addbook;
@@ -353,13 +440,13 @@ public class tambahbuku extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JLabel jlabel;
     private javax.swing.JTextField judul;
     private javax.swing.JTextField pengarang;
     // End of variables declaration//GEN-END:variables
